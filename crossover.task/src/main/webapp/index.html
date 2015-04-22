@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<link rel="stylesheet" type="text/css"
+	href="css/jquery.datetimepicker.css" />
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="http://momentjs.com/downloads/moment.js"></script>
+<script src="js/jquery.datetimepicker.js"></script>
+<script src="js/jquery.autocomplete.js"></script>
+<script src="js/main.js"></script>
+
+<title>Drivers - Test Task</title>
+</head>
+<body>
+	<div class="main">
+		<div class="content">
+			<div class="subtitle-div">
+				<div class="text-div" style="padding-left: 21px;">
+					<h3>Drivers in List</h3>
+				</div>
+			</div>
+			<table class="fieldList">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Birth date</th>
+						<th>Age</th>
+						<th>Gender</th>
+						<th>Category</th>
+						<th colspan="2"></th>
+					</tr>
+				</thead>
+				<tbody class="app-ul" id="driversList">
+
+				</tbody>
+			</table>
+			<p>
+				<strong>Add Drivers:</strong><br> <input type="text"
+					id="driverSearch"
+					placeholder="Start enter the name to lookup drivers" />
+			</p>
+			<div class="editForm" align="center">
+				<table>
+					<tr>
+						<td><label>Name:</label></td>
+						<td><input type="text" id="_name" /></td>
+					</tr>
+					<tr>
+						<td><label>Birth Date:</label></td>
+						<td><input type="text" id="_birthDate" /></td>
+					</tr>
+					<tr>
+						<td><label>Age:</label></td>
+						<td><input type="text" id="_age" readonly /></td>
+					</tr>
+					<tr>
+						<td><label>Gender:</label></td>
+						<td><label><input type="radio" name="gender"
+								id="_male" value="male" />Male</label> <label><input
+								type="radio" name="gender" id="_female" value="female" />Female</label></td>
+					</tr>
+					<tr>
+						<td><label>Category</label></td>
+						<td><select id="_cat"></select></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><button id="_save">Save</button></td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+		<div class="red2" id="ajaxred"></div>
+	</div>
+</body>
+</html>

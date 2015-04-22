@@ -1,0 +1,282 @@
+@CHARSET "UTF-8";
+/* reset */
+/* html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, */
+/* 	blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, */
+/* 	em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, */
+/* 	b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, */
+/* 	table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, */
+/* 	details, embed, figure, figcaption, footer, header, hgroup, menu, nav, */
+/* 	output, ruby, section, summary, time, mark, audio, video { */
+/* 	margin: 0; */
+/* 	padding: 0; */
+/* 	border: 0; */
+/* 	font-size: 100%; */
+/* 	font: inherit; */
+/* 	vertical-align: baseline; */
+/* } */
+
+/* article, aside, details, figcaption, figure, footer, header, hgroup, */
+/* 	menu, nav, section { */
+/* 	display: block; */
+/* } */
+* {
+	font-family: sans-serif;
+}
+
+/* body { */
+/* 	line-height: 1; */
+/* } */
+
+/* ol, ul { */
+/* 	list-style: none; */
+/* } */
+
+/* blockquote, q { */
+/* 	quotes: none; */
+/* } */
+
+/* blockquote:before, blockquote:after, q:before, q:after { */
+/* 	content: ''; */
+/* 	content: none; */
+/* } */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* main css */
+h3 {
+	font-size: 1.1em;
+	font-weight: bolder;
+}
+
+.persons-list {
+	background: white;
+	border: 1px solid #CCCCCC;
+	border-radius: 3px;
+}
+
+tbody.app-ul tr {
+	padding: 10px 5px;
+	position: relative;
+}
+
+tbody.app-ul tr:hover {
+	background: #D3D3D3;
+}
+
+tbody.app-ul tr td {
+	text-align: center;
+	padding: 5px 15px;
+	white-space: nowrap;
+}
+
+tbody.app-ul tr:hover td div.control {
+	visibility: visible;
+}
+
+tbody.app-ul tr td.nocontent, tbody.app-ul tr td.nocontent:hover {
+	background: white;
+	font-style: italic;
+	font-size: .9em;
+	color: #747474;
+	text-align: center;
+}
+
+tbosy.app-ul tr td div.inline {
+	display: inline-block;
+}
+
+.image {
+	vertical-align: middle;
+	width: 16px;
+	height: 16px;
+	margin-bottom: 3px;
+	cursor: pointer;
+}
+
+.image.add {
+	background-image: url('./images/add.png');
+}
+
+.edit {
+	background-image: url('images/edit.png');
+	top: 5px;
+}
+
+.remove {
+	background-image: url('images/delete.gif');
+	top: 30px;
+}
+
+.address.edit {
+	top: 2px;
+}
+
+.address.remove {
+	top: 20px;
+}
+
+.image.person {
+	background-image: url('images/person.png');
+}
+
+.image.logout {
+	background-image: url('images/logout.png');
+}
+
+.image.back {
+	background-image: url('images/back.png');
+}
+
+table.app-ul tr:hover td div.control {
+	display: block;
+}
+
+tbody.app-ul tr td div.control {
+	visibility: hidden;
+	width: 16px;
+	height: 16px;
+}
+
+tbody.app-ul tr td:hover div.control {
+	cursor: pointer;
+}
+
+tbody.app-ul.bordered tr:first-child {
+	border-top: 1px solid #C0C0C0;
+}
+
+tbody.app-ul.bordered tr:last-child {
+	border-bottom: 1px solid #C0C0C0;
+}
+
+.person-bd {
+	vertical-align: middle;
+	font-size: 0.8em;
+	font-style: italic;
+	color: #3C3B3B;
+}
+
+.fieldList {
+	margin: auto;
+}
+
+.fieldList tr td {
+	padding: 5px;
+	vertical-align: middle;
+}
+
+.title-div {
+	margin: 10px;
+	text-align: right;
+	border-bottom: 1px solid #C0C0C0;
+	padding: 3px;
+}
+
+.left-button-div {
+	display: inline-block;
+	float: right;
+	margin-right: 5px;
+}
+
+.right-button-div {
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.main {
+	width: 500px;
+	margin: auto;
+}
+
+.subtitle-div {
+	margin: 10px;
+}
+
+.subtitle-div div.text-div {
+	display: inline-block
+}
+
+.add-address-div {
+	display: inline-block;
+	margin: 5px;
+	margin-left: 10px;
+}
+
+.remark {
+	font-style: italic;
+	color: #C0C0C0;
+	font-size: 0.8em;
+	margin-left: 10px;
+}
+
+.addrDlg {
+	padding: 10px;
+	margin: auto;
+	width: 200px;
+	height: 50px;
+	background-color: #fafafa;
+	border: 2px solid #C0C0C0;
+	border-radius: 5px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+div.red {
+	font-size: .8em;
+	color: red;
+	visibility: hidden;
+}
+
+div.red2 {
+	font-size: .8em;
+	color: red;
+}
+
+#driverSearch {
+	width: 100%;
+}
+
+.editForm {
+	margin: auto;
+	display: none;
+}
+
+.editForm table tr>td {
+	padding-bottom: 5px;
+}
+
+.editForm table tr td select {
+	width: 100%;
+}
+/* Autocomplete */
+.autocomplete-suggestions {
+	border: 1px solid #999;
+	background: #FFF;
+	overflow: auto;
+}
+
+.autocomplete-suggestion {
+	padding: 2px 5px;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.autocomplete-selected {
+	background: #F0F0F0;
+}
+
+.autocomplete-suggestions strong {
+	font-weight: normal;
+	color: #3399FF;
+}
+
+.autocomplete-group {
+	padding: 2px 5px;
+}
+
+.autocomplete-group strong {
+	display: block;
+	border-bottom: 1px solid #000;
+}
