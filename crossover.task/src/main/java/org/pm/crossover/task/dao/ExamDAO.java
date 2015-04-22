@@ -12,4 +12,9 @@ public interface ExamDAO {
 
 	public abstract <T> List<T> list(Class<T> entityClass);
 
+	public abstract <T> List<T> list(Class<T> entityClass, Map<String, ?> restrictions,
+			String orderBy);
+
+	public abstract <T> T findById(Class<T> entityClass, int id);
+
 }

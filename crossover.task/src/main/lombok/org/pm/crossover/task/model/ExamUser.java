@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  *
  */
@@ -22,12 +24,16 @@ import lombok.NoArgsConstructor;
 @Table(name = "examuser")
 public class ExamUser {
 
+	@JsonIgnore
 	@Id
 	@GeneratedValue
 	private Integer id;
 	private String fullName;
+	@JsonIgnore
 	private String username;
+	@JsonIgnore
 	private String password;
+	@JsonIgnore
 	private Boolean enabled;
 
 }

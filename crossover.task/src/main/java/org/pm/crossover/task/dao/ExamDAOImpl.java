@@ -1,14 +1,14 @@
 package org.pm.crossover.task.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.PostConstruct;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.pm.crossover.task.model.Answer;
 import org.pm.crossover.task.model.Exam;
@@ -26,7 +26,7 @@ public class ExamDAOImpl implements ExamDAO {
 	/**
 	 * Test data creation
 	 */
-//	@PostConstruct
+	// @PostConstruct
 	public void init() {
 		insert(new ExamUser(null, "Test User", "test", "123", true));
 		insert(new ExamUser(null, "User for test", "user", "321", true));
@@ -117,7 +117,9 @@ public class ExamDAOImpl implements ExamDAO {
 		insert(a);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.pm.crossover.task.dao.IExamDAO#insert(java.lang.Object)
 	 */
 	@Override
@@ -129,30 +131,59 @@ public class ExamDAOImpl implements ExamDAO {
 		session.close();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.pm.crossover.task.dao.IExamDAO#list(java.lang.Class, java.util.Map)
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T> List<T> list(Class<T> entityClass, Map<String,?> restrictions) {
-		Session session = this.sessionFactory.openSession();
-		Criteria criteria = session.createCriteria(entityClass);
-		if (restrictions != null) {
-			criteria.add(Restrictions.allEq(restrictions));
-		}
-		List<T> personList = criteria.list();
-		session.close();
-		return personList;
-	}
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.pm.crossover.task.dao.IExamDAO#list(java.lang.Class)
 	 */
 	@Override
 	public <T> List<T> list(Class<T> entityClass) {
 		return list(entityClass, null);
 	}
-	
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.pm.crossover.task.dao.IExamDAO#list(java.lang.Class,
+	 * java.util.Map)
+	 */
+	@Override
+	public <T> List<T> list(Class<T> entityClass, Map<String, ?> restrictions) {
+		return list(entityClass, restrictions, null);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.pm.crossover.task.dao.IExamDAO#list(java.lang.Class,
+	 * java.util.Map, java.lang.String)
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> List<T> list(Class<T> entityClass, Map<String, ?> restrictions,
+			String orderBy) {
+		Session session = this.sessionFactory.openSession();
+		Criteria criteria = session.createCriteria(entityClass);
+		if (restrictions != null) {
+			criteria.add(Restrictions.allEq(restrictions));
+		}
+		if (orderBy != null && !orderBy.isEmpty()) {
+			criteria.addOrder(Order.asc(orderBy));
+		}
+		List<T> personList = criteria.list();
+		session.close();
+		return personList;
+	}
+
+	@Override
+	public <T> T findById(Class<T> entityClass, int id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", new Integer(id));
+		List<T> list = list(entityClass, map);
+		if (!list.isEmpty()) {
+			return list.iterator().next();
+		}
+		return null;
+	}
 
 }

@@ -15,6 +15,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Question choice answer
  */
@@ -28,11 +30,13 @@ public class Answer {
 	@Id
 	@GeneratedValue
 	private Integer id;
+	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="question")
 	private Question question;
 	private String text;
 	private Integer answerOrder;
+	@JsonIgnore
 	private Boolean correct;
-
+	
 }

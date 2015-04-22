@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,14 +30,16 @@ public class Question {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="exam")
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "exam")
 	private Exam exam;
 	private String title;
 	private String description;
 	private Boolean multiAnswer;
 	private Integer questionOrder;
-	@OneToMany(mappedBy="question")
+	@JsonIgnore
+	@OneToMany(mappedBy = "question")
 	private Set<Answer> answers;
 
 }
