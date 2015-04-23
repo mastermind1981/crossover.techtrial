@@ -98,7 +98,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>testtrial</finalName>
+		<finalName>techtrial</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.projectlombok</groupId>

@@ -3,6 +3,7 @@
  */
 package org.pm.crossover.task.service;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -30,8 +31,12 @@ import org.springframework.web.context.WebApplicationContext;
 @NoArgsConstructor
 @Component
 @Scope(WebApplicationContext.SCOPE_SESSION)
-public class ExamInfo {
+public class ExamInfo implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4258463847164317127L;
 	/**
 	 * user in session
 	 */
@@ -67,55 +72,8 @@ public class ExamInfo {
 		return set != null && !set.isEmpty();
 	}
 
-	public void clearResults() {
-		exam = null;
-		question = null;
-		startTime = null;
-		finishTime = null;
-		answeredQuestions.clear();
-	}
-
-	@PostConstruct
-	public void init() {
-		System.out.println("Init exam info");
-	}
-
-	public boolean isUserAuthenticated() {
-		return user != null;
-	}
-
-	public boolean isExamActive() {
-		return isExamStarted() && !isExamFullyAnswered() && !isExamTimedOut();
-	}
-
-	public boolean isExamFullyAnswered() {
-		return isExamStarted()
-				&& answeredQuestions.keySet().containsAll(exam.getQuestions());
-	}
-
-	public boolean isExamStarted() {
-		return isUserAuthenticated() && exam != null;
-	}
-
-	public boolean isExamTimedOut() {
-		return isExamStarted()
-				&& startTime != null
-				&& (new Date().getTime() - startTime.getTime() <= exam
-						.getDuration() * 60 * 1000);
-	}
-
-	public boolean startExam(Exam e) {
-		if (isExamStarted()) {
-			exam = e;
-			question = null;
-			startTime = new Date();
-			return true;
-		}
-		return false;
-	}
-
 	public ExamState checkAndFinishExam() {
-		if (!isExamActive()) {
+		if (isExamFinished()) {
 			finishTime = new Date();
 			question = null;
 			ExamState state = getState();
@@ -137,6 +95,14 @@ public class ExamInfo {
 		return getState();
 	}
 
+	public void clearResults() {
+		exam = null;
+		question = null;
+		startTime = null;
+		finishTime = null;
+		answeredQuestions.clear();
+	}
+
 	public ExamState getState() {
 		ExamState state = new ExamState();
 		state.setExamActive(isExamActive());
@@ -146,12 +112,55 @@ public class ExamInfo {
 		state.setExamFullyAnswered(isExamFullyAnswered());
 		state.setQuestionsAnswered(answeredQuestions.size());
 		state.setQuestionsCount(exam == null ? 0 : exam.getQuestions().size());
-		state.setTimeLeft(startTime == null ? 0 : (exam.getDuration() * 60
-				* 1000 + startTime.getTime() - new Date().getTime()));
+		state.setTimeLeft(startTime == null || exam == null ? 0 : (exam
+				.getDuration() * 60 * 1000 + startTime.getTime() - new Date()
+				.getTime()));
 		state.setUserName(user == null ? null : user.getFullName());
 		state.setStartTime(startTime);
 		state.setFinishTime(finishTime);
-		return null;
+		return state;
+	}
+
+	@PostConstruct
+	public void init() {
+	}
+
+	public boolean isExamActive() {
+		return isExamStarted() && !isExamFullyAnswered() && !isExamTimedOut();
+	}
+
+	public boolean isExamFinished() {
+		return isExamStarted() && (isExamFullyAnswered() || isExamTimedOut());
+	}
+
+	public boolean isExamFullyAnswered() {
+		return isExamStarted()
+				&& answeredQuestions.keySet().containsAll(exam.getQuestions());
+	}
+
+	public boolean isExamStarted() {
+		return isUserAuthenticated() && exam != null;
+	}
+
+	public boolean isExamTimedOut() {
+		return isExamStarted()
+				&& startTime != null
+				&& (new Date().getTime() - startTime.getTime() <= exam
+						.getDuration() * 60 * 1000);
+	}
+
+	public boolean isUserAuthenticated() {
+		return user != null;
+	}
+
+	public boolean startExam(Exam e) {
+		if (!isExamStarted()) {
+			exam = e;
+			question = null;
+			startTime = new Date();
+			return true;
+		}
+		return false;
 	}
 
 }

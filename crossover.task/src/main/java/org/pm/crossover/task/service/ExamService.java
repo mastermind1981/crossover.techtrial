@@ -1,5 +1,6 @@
 package org.pm.crossover.task.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.pm.crossover.task.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -28,7 +30,9 @@ public class ExamService {
 
 	@PostConstruct
 	public void init() {
-		System.out.println("Init exam service");
+		Authentication a = SecurityContextHolder.getContext()
+				.getAuthentication();
+		setUser(a);
 	}
 
 	/*
@@ -78,16 +82,6 @@ public class ExamService {
 		return info.checkAndFinishExam();
 	}
 
-	/*
-	 * get next question
-	 * 
-	 * start exam
-	 * 
-	 * set answer
-	 */
-
-	/* package-visible methods to be used only by ExamInfo class */
-
 	private Question getNextQuestion(Question q) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("exam", q.getExam());
@@ -115,12 +109,26 @@ public class ExamService {
 	public void setUser(Authentication authentication) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("username", authentication.getName());
-//		map.put("password", authentication.getCredentials());
+		// map.put("password", authentication.getCredentials());
 		List<ExamUser> list = dao.list(ExamUser.class, map);
 		if (!list.isEmpty()) {
 			info.setUser(list.iterator().next());
 		} else {
 			info.setUser(null);
 		}
+	}
+
+	public Question getCurrentQuestion() {
+		return info.getQuestion();
+	}
+
+	public List<Answer> getCurrentAnswers() {
+		return getAnswersFor(info.getQuestion());
+	}
+
+	public long getTimeLeft() {
+		return info.getStartTime() == null || info.getExam() == null ? 0
+				: (info.getExam().getDuration() * 60 * 1000
+						+ info.getStartTime().getTime() - new Date().getTime());
 	}
 }
