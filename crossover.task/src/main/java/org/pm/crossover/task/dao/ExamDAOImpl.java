@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,7 +14,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.pm.crossover.task.model.Answer;
 import org.pm.crossover.task.model.Exam;
-import org.pm.crossover.task.model.ExamUser;
 import org.pm.crossover.task.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,21 +27,19 @@ public class ExamDAOImpl implements ExamDAO {
 	/**
 	 * Test data creation
 	 */
-	// @PostConstruct
+	 @PostConstruct
 	public void init() {
-		insert(new ExamUser(null, "Test User", "test", "123", true));
-		insert(new ExamUser(null, "User for test", "user", "321", true));
 		Answer a;
 		Question q;
 		int ordQ; // order of question
 		int ordA; // order of answer
 
 		Exam e = new Exam();
-		e.setName("My first exam");
-		e.setDescription("The dummy test exam with only fake questions");
+		e.setName("My second exam");
+		e.setDescription("Anothre yet dummy test exam with only fake questions");
 		e.setPassScore(3);
 		e.setTotalScore(5);
-		e.setDuration(10L);
+		e.setDuration(1L);
 		insert(e);
 		ordQ = 0;
 
@@ -75,9 +74,9 @@ public class ExamDAOImpl implements ExamDAO {
 		insert(a);
 		a = new Answer(null, q, "Paris", ordA++, false);
 		insert(a);
-		a = new Answer(null, q, "Moscow", ordA++, true);
+		a = new Answer(null, q, "Moscow", ordA++, false);
 		insert(a);
-		a = new Answer(null, q, "Capetown", ordA++, false);
+		a = new Answer(null, q, "Capetown", ordA++, true);
 		insert(a);
 
 		q = new Question();

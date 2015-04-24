@@ -1,4 +1,5 @@
 
+DROP TABLE IF EXISTS `examresult`;
 DROP TABLE IF EXISTS `answer`;
 DROP TABLE IF EXISTS `question`;
 DROP TABLE IF EXISTS `exam`;
@@ -88,6 +89,29 @@ CREATE TABLE `user_roles` (
   KEY `fk_username_idx` (`userid`),
   CONSTRAINT `fk_username` FOREIGN KEY (`userid`) REFERENCES `examuser` (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `examresult`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `examresult` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `examuser` int(11) DEFAULT NULL,
+  `exam` int(11) DEFAULT NULL,
+  `examTimedOut` bit(1) DEFAULT NULL,
+  `examFullyAnswered` bit(1) DEFAULT NULL,
+  `questionsAnswered` int(11) DEFAULT NULL,
+  `score` int(11) DEFAULT NULL,
+  `startTime` DATETIME DEFAULT NULL,
+  `finishTime` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `FK_exam1` FOREIGN KEY (`exam`) REFERENCES `exam` (`id`),
+  CONSTRAINT `fk_username1` FOREIGN KEY (`examuser`) REFERENCES `examuser` (id)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

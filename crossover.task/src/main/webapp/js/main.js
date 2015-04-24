@@ -7,6 +7,7 @@ function parseTime(strDate) {
 }
 
 function updateState() {
+	deactivateTimer();
 	$.getJSON('./rest/state', {}, function(data) {
 		if (!data) {
 			return;
@@ -67,14 +68,18 @@ function showExamResults(state) {
 		var qAns = state.userAnswers[q.id];
 		var td = $('<td>');
 		var score = 0;
-		qAns.forEach(function(a) {
-			td.append(' ').append(
-					$('<span>').text(a.text).addClass(
-							!a.correct ? 'red' : 'green'));
-			if (a.correct) {
-				score++;
-			}
-		})
+		if (qAns) {
+			qAns.forEach(function(a) {
+				td.append(' ').append(
+						$('<span>').text(a.text).addClass(
+								!a.correct ? 'red' : 'green'));
+				if (a.correct) {
+					score++;
+				}
+			})
+		} else {
+			td.append($('<span>').text('-').addClass('red'));
+		}
 		b.append($('<tr>').append($('<td>').text(q.title), td,
 				$('<td>').text(score)))
 
@@ -198,14 +203,20 @@ function showQuestionObject(question) {
 
 function activateTimer() {
 	if (!timerId) {
+		$('#_timeleft').empty();
 		timerId = window.setInterval(function() {
 			if (!timerId) {
 				return;
 			}
 			$.getJSON('./rest/timeleft', {}, function(time) {
-				$('#_timeleft').text(millisecondsToString(time));
+				var timeSpan = $('#_timeleft');
+				timeSpan.text(millisecondsToString(time));
+				if (time > 10000) {
+					timeSpan.removeClass('red');
+				} else {
+					timeSpan.addClass('red');
+				}
 				if (time <= 0) {
-					deactivateTimer();
 					updateState();
 				}
 			})
@@ -233,6 +244,9 @@ function millisecondsToString(ms) {
 function pad(num, size) {
 	if (!size) {
 		size = 2;
+	}
+	if (num < 0) {
+		num = 0;
 	}
 	var s = num + "";
 	while (s.length < size)

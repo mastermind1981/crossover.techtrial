@@ -87,9 +87,6 @@ public class ExamService {
 				q = getNextQuestion(q);
 				while (q == null || info.isAnswered(q)) {
 					q = getNextQuestion(q);
-					if (q == null) {
-						q = getFirstQuestion(info.getExam());
-					}
 				}
 				return q;
 			}
@@ -127,7 +124,7 @@ public class ExamService {
 		if (!list.isEmpty()) {
 			return list.iterator().next();
 		}
-		return null;
+		return getFirstQuestion(q.getExam());
 	}
 
 	public void setUser(Authentication authentication) {
