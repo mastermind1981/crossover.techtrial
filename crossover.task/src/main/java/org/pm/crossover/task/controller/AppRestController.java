@@ -1,9 +1,11 @@
 package org.pm.crossover.task.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import org.pm.crossover.task.dto.ExamState;
-import org.pm.crossover.task.model.Answer;
+import org.pm.crossover.task.dto.AnswerDTO;
+import org.pm.crossover.task.dto.ExamStateDTO;
 import org.pm.crossover.task.model.Exam;
 import org.pm.crossover.task.model.Question;
 import org.pm.crossover.task.service.ExamService;
@@ -26,10 +28,10 @@ public class AppRestController {
 	ExamService svc;
 
 	@RequestMapping("/state")
-	public @ResponseBody ExamState getState() {
+	public @ResponseBody ExamStateDTO getState() {
 		return svc.getState();
 	}
-	
+
 	@RequestMapping("/timeleft")
 	public @ResponseBody long getTimeLeft() {
 		return svc.getTimeLeft();
@@ -40,24 +42,44 @@ public class AppRestController {
 		return svc.getExams();
 	}
 
-	@RequestMapping("/question")
-	public @ResponseBody Question getCurrentQuestion() {
-		return svc.getCurrentQuestion();
+	@RequestMapping("/questionsmap")
+	public @ResponseBody Map<Question, Boolean> getQuestionsMap() {
+		return svc.getQuestionsWithAnswerMarks();
+	}
+
+	@RequestMapping("/questions")
+	public @ResponseBody List<Question> getUnansweredQuestions() {
+		Map<Question, Boolean> map = svc.getQuestionsWithAnswerMarks();
+		ArrayList<Question> list = new ArrayList<Question>();
+		for (Question q : map.keySet()) {
+			Boolean bool = map.get(q);
+			if (bool == null || !bool) {
+				list.add(q);
+			}
+		}
+		return list;
 	}
 
 	@RequestMapping("/answers")
-	public @ResponseBody List<Answer> getAnswers() {
-		return svc.getCurrentAnswers();
+	public @ResponseBody List<AnswerDTO> getAnswers(
+			@RequestParam("id") int questionId) {
+		return svc.getAnswersFor(questionId);
 	}
-	
+
 	@RequestMapping("/startexam")
-	public Question startExam(@RequestParam("id") int id) {
+	public List<Question> startExam(@RequestParam("id") int id) {
 		return svc.startExam(id);
 	}
-	
-	@RequestMapping(value="/postanswer", method=RequestMethod.POST)
-	public Question putAnswers(@RequestBody int[] answers) {
-		return svc.addAnswers(answers);
+
+	@RequestMapping(value = "/postanswer", method = RequestMethod.POST)
+	public Integer putAnswers(@RequestParam("id") int questionId,
+			@RequestBody int[] answers) {
+		Question q = svc.addAnswers(questionId, answers);
+		if (q != null) {
+			return q.getId();
+		} else {
+			return -1;
+		}
 	}
 
 }

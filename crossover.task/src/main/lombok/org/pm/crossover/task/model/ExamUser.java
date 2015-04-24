@@ -3,6 +3,8 @@
  */
 package org.pm.crossover.task.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,8 +24,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @NoArgsConstructor
 @Entity
 @Table(name = "examuser")
-public class ExamUser {
+public class ExamUser implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5868729022055495242L;
 	@JsonIgnore
 	@Id
 	@GeneratedValue

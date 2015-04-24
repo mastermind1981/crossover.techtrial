@@ -1,5 +1,8 @@
 package org.pm.crossover.task.model;
 
+import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,26 +17,32 @@ import lombok.NoArgsConstructor;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/**
- * Question
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "question")
-public class Question {
+@Table(name = "examresult")
+public class ExamResult implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4220013591215362813L;
+	@JsonIgnore
 	@Id
 	@GeneratedValue
 	private Integer id;
-	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "examuser")
+	private ExamUser examuser;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "exam")
 	private Exam exam;
-	private String title;
-	private String description;
-	private Boolean multiAnswer;
-	private Integer questionOrder;
-
+	private boolean examTimedOut;
+	private boolean examFullyAnswered;
+	private int questionsAnswered;
+	private Date startTime;
+	private Date finishTime;
+	private int score;
+	
 }

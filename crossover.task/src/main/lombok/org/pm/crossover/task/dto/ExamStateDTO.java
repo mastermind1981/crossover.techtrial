@@ -9,14 +9,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import org.pm.crossover.task.model.Answer;
-import org.pm.crossover.task.model.Question;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExamState {
+public class ExamStateDTO {
 	private String userName;
-	private String examName;
+	private ExamDTO exam;
 	private boolean examStarted;
 	private boolean examActive;
 	private boolean examTimedOut;
@@ -26,6 +25,6 @@ public class ExamState {
 	private long timeLeft;
 	private Date startTime;
 	private Date finishTime;
-	private Map<Question, Set<Answer>> userAnswers;
-	private Map<Question, Set<Answer>> correctAnswers;
+	private Map<Integer, Set<Answer>> userAnswers;
+	private int score;
 }

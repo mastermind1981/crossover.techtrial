@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 
 <link rel="stylesheet" type="text/css" href="css/main.css" />
-<link rel="stylesheet" type="text/css"
-	href="css/jquery.datetimepicker.css" />
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="http://momentjs.com/downloads/moment.js"></script>
@@ -18,12 +16,137 @@
 	<div class="main">
 		<div class="content">
 			<div align="right">
-				<a href="./logout">Logout</a>
+				<i><span id="_fullname"></span></i> <a href="./logout">Logout</a>
 			</div>
-			<div class="subtitle-div">
-				<div class="text-div" style="padding-left: 21px;">
-					<h3>Exam</h3>
+
+			<!-- Exam list -->
+			<div class="subtitle-div" id="_exams">
+				<div class="text-div">
+					<h3>Available exams</h3>
 				</div>
+				<table class="fieldList">
+					<tbody class="app-ul" id="_examlist" />
+				</table>
+			</div>
+
+			<!-- Exam info -->
+			<div class="subtitle-div" id="_examinfo">
+				<div class="text-div">
+					<h3>
+						Exam #<span id="_id"></span> Overview
+					</h3>
+				</div>
+				<table class="fieldList">
+					<tr>
+						<td>Exam Name:</td>
+						<td><strong><span id="_name"></span></strong></td>
+					</tr>
+					<tr>
+						<td>Description:</td>
+						<td><span id="_desc"></span></td>
+					</tr>
+					<tr>
+						<td>Duration:</td>
+						<td><strong><span id="_duration"></span> minutes</strong></td>
+					</tr>
+					<tr>
+						<td>Pass score:</td>
+						<td><strong><span id="_pass"></span></strong> points (<strong><span
+								id="_total"></span></strong> total)</td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><button class="backToExamList">Back
+								to list</button>
+							<button id="_start">Start exam</button></td>
+					</tr>
+				</table>
+			</div>
+
+			<!-- Question -->
+			<div class="subtitle-div" id="_question">
+				<div class="text-div">
+					<span id="_timeleft"></span><br>
+					<span>Choose a question: <select id="_questions"></select></span>
+					<h3>
+						Q#<span id="_order"></span> <span id="_title"></span>
+					</h3>
+				</div>
+				<div id="_options">
+					<table class="ansList">
+						<thead>
+							<tr>
+								<td >
+									<p id="_desc"></p>
+								</td>
+							</tr>
+						</thead>
+						<tbody id="_optionsBody">
+						</tbody>
+						<tfoot>
+							<tr>
+								<td ><button id="_postanswer">Post
+										answer</button></td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+
+			<!-- Exam result -->
+			<div class="subtitle-div" id="_examresult">
+				<div class="text-div">
+					<h3>
+						Exam #<span id="_id"></span> results
+					</h3>
+				</div>
+				<table class="fieldList">
+					<tr>
+						<td>Exam Name:</td>
+						<td><strong><span id="_name"></span></strong></td>
+					</tr>
+					<tr>
+						<td>Status:</td>
+						<td><strong><span id="_status"></span></strong></td>
+					</tr>
+					<tr>
+						<td>Your score:</td>
+						<td><strong><span id="_score"></span></strong> points</td>
+					</tr>
+					<tr>
+						<td>Pass score:</td>
+						<td><strong><span id="_pass"></span></strong> points (<strong><span
+								id="_total"></span></strong> total)</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<table>
+								<thead>
+									<tr>
+										<th>Question</th>
+										<th>Your answer</th>
+										<th>Score</th>
+									</tr>
+								</thead>
+								<tbody id="_answerResults">
+									<tr>
+										<td>What is the capital of the Freat Britain</td>
+										<td><span class="red">Paris</span>, <span class="green">London</span></td>
+										<td>1</td>
+									</tr>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="2">Overall</td>
+										<td><span id="_sumscore">4</span></td>
+									</tr>
+								</tfoot>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><button class="backToExamList">Home</button></td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>

@@ -1,14 +1,9 @@
 package org.pm.crossover.task.model;
 
-import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,8 +30,5 @@ public class Exam {
 	 * The duration of test in minutes
 	 */
 	private Long duration;
-	@JsonIgnore
-	@OneToMany(mappedBy = "exam")
-	Set<Question> questions;
 
 }
