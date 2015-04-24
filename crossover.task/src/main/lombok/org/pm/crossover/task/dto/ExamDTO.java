@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import org.pm.crossover.task.model.Exam;
 
 /**
- * Exam entity
+ * Exam entity DTO
  */
 @Data
 @AllArgsConstructor

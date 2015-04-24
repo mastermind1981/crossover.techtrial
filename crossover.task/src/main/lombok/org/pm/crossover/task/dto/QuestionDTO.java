@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import org.pm.crossover.task.model.Question;
 
 /**
- * Question
+ * Question DTO
  */
 @Data
 @NoArgsConstructor

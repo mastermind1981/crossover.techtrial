@@ -41,38 +41,58 @@ public class ExamService {
 
 	}
 
-	/*
-	 * get current state
+	/**
+	 * 
+	 * @return list of exams
 	 */
-	public void getCurrentState() {
-
-	}
-
 	public List<Exam> getExams() {
 		return dao.list(Exam.class, null, "name");
 	}
 
-	public List<Question> getQuestions() {
-		return info.getQuestions();
-	}
-
+	/**
+	 * list of questions for the given exam
+	 */
 	List<Question> getQuestionsFor(Exam exam) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("exam", exam);
 		return dao.list(Question.class, map, "questionOrder");
 	}
 
+	/**
+	 * 
+	 * @param questionId
+	 *            current question id
+	 * @return list of answers for the given question (without
+	 *         <code>correct</code> field)
+	 */
 	public List<AnswerDTO> getAnswersFor(int questionId) {
 		Question question = dao.findById(Question.class, questionId);
 		return DTOUtil.getAnswerList(getAnswersFor(question));
 	}
 
+	/**
+	 * 
+	 * @param question
+	 *            current question
+	 * @return list of answers for the given question (without
+	 *         <code>correct</code> field)
+	 */
 	List<Answer> getAnswersFor(Question question) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("question", question);
 		return dao.list(Answer.class, map, "answerOrder");
 	}
 
+	/**
+	 * put answers for the given question
+	 * 
+	 * @param questionId
+	 *            current question id
+	 * @param answerIds
+	 *            user answers ids
+	 * @return next unanswered question (null if there are no unanswered
+	 *         questions)
+	 */
 	public Question addAnswers(int questionId, int[] answerIds) {
 		Question q = dao.findById(Question.class, questionId);
 		if (answerIds != null) {
@@ -94,6 +114,12 @@ public class ExamService {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param examId
+	 *            selected exam id
+	 * @return list of exam questions
+	 */
 	public List<Question> startExam(int examId) {
 		Exam exam = dao.findById(Exam.class, examId);
 		List<Question> questions = getQuestionsFor(exam);
@@ -101,6 +127,10 @@ public class ExamService {
 		return info.getQuestions();
 	}
 
+	/**
+	 * 
+	 * @return current state
+	 */
 	public ExamStateDTO getState() {
 		return info.checkAndFinishExam();
 	}
@@ -127,6 +157,12 @@ public class ExamService {
 		return getFirstQuestion(q.getExam());
 	}
 
+	/**
+	 * finds user with given username
+	 * 
+	 * @param authentication
+	 *            authentication
+	 */
 	public void setUser(Authentication authentication) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("username", authentication.getName());
@@ -139,16 +175,21 @@ public class ExamService {
 		}
 	}
 
-	public List<Answer> getAnswers(int questionId) {
-		return getAnswersFor(dao.findById(Question.class, questionId));
-	}
-
+	/**
+	 * 
+	 * @return the time left in milliseconds
+	 */
 	public long getTimeLeft() {
 		return info.getStartTime() == null || info.getExam() == null ? 0
 				: (info.getExam().getDuration() * 60 * 1000
 						+ info.getStartTime().getTime() - new Date().getTime());
 	}
 
+	/**
+	 * 
+	 * @return the list of questions for the current exam with mark showing if
+	 *         the question has been already answered or not
+	 */
 	public Map<Question, Boolean> getQuestionsWithAnswerMarks() {
 		Map<Question, Set<Answer>> aa = info.getAnsweredQuestions();
 		List<Question> qq = info.getQuestions();

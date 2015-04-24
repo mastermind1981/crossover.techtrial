@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
- *
+ * the session object for user. Stores the info about current state
  */
 @Data
 @NoArgsConstructor
@@ -65,6 +65,15 @@ public class ExamInfo implements Serializable {
 
 	private final Map<Question, Set<Answer>> answeredQuestions = new Hashtable<Question, Set<Answer>>();
 
+	/**
+	 * 
+	 * @param question
+	 *            question
+	 * @param answers
+	 *            list of answers
+	 * @return <code>true</code> if the answers were put successfully and the
+	 *         question now considered as answered, <code>false</code> otherwise
+	 */
 	public boolean addAnswers(Question question, Answer... answers) {
 		Set<Answer> set = answeredQuestions.get(question);
 		for (Answer a : answers) {
@@ -80,11 +89,24 @@ public class ExamInfo implements Serializable {
 		return set != null && !set.isEmpty();
 	}
 
+	/**
+	 * 
+	 * @param question
+	 *            question
+	 * @return <code>true</code> if question has answer(s) chosen by user,
+	 *         <code>false</code> otherwise
+	 */
 	public boolean isAnswered(Question question) {
 		Set<Answer> set = answeredQuestions.get(question);
 		return set != null && !set.isEmpty();
 	}
 
+	/**
+	 * checks if the current exam can be considered as finished and generates
+	 * current state object
+	 * 
+	 * @return current state
+	 */
 	public ExamStateDTO checkAndFinishExam() {
 		if (isExamFinished()) {
 			finishTime = new Date();
@@ -119,6 +141,9 @@ public class ExamInfo implements Serializable {
 		return getState();
 	}
 
+	/**
+	 * removes all information about the currently running exam
+	 */
 	public void clearResults() {
 		exam = null;
 		questions.clear();
@@ -127,6 +152,11 @@ public class ExamInfo implements Serializable {
 		answeredQuestions.clear();
 	}
 
+	/**
+	 * 
+	 * @return current state (considering the exam is either still running or
+	 *         not started at all)
+	 */
 	public ExamStateDTO getState() {
 		ExamStateDTO state = new ExamStateDTO();
 		state.setExamActive(isExamActive());
@@ -152,23 +182,48 @@ public class ExamInfo implements Serializable {
 	public void init() {
 	}
 
+	/**
+	 * 
+	 * @return <code>true</code> if the exam is currently running,
+	 *         <code>false</code> otherwise
+	 */
 	public boolean isExamActive() {
 		return isExamStarted() && !isExamFullyAnswered() && !isExamTimedOut();
 	}
 
+	/**
+	 * 
+	 * @return <code>true</code> if the exam was running ans now is finished,
+	 *         <code>false</code> otherwise
+	 */
 	public boolean isExamFinished() {
 		return isExamStarted() && (isExamFullyAnswered() || isExamTimedOut());
 	}
 
+	/**
+	 * 
+	 * @return <code>true</code> if all the questions from the exam are unswered
+	 *         by user, <code>false</code> otherwise
+	 */
 	public boolean isExamFullyAnswered() {
 		return isExamStarted()
 				&& answeredQuestions.keySet().containsAll(questions);
 	}
 
+	/**
+	 * 
+	 * @return <code>true</code> if the user has selected the exam,
+	 *         <code>false</code> otherwise
+	 */
 	public boolean isExamStarted() {
 		return isUserAuthenticated() && exam != null;
 	}
 
+	/**
+	 * 
+	 * @return <code>true</code> if the time for the exam has been out,
+	 *         <code>false</code> otherwise
+	 */
 	public boolean isExamTimedOut() {
 		return isExamStarted()
 				&& startTime != null
@@ -176,10 +231,24 @@ public class ExamInfo implements Serializable {
 						.getDuration() * 60 * 1000);
 	}
 
+	/**
+	 * 
+	 * @return <code>true</code> if the user has been authenticated,
+	 *         <code>false</code> otherwise
+	 */
 	public boolean isUserAuthenticated() {
 		return user != null;
 	}
 
+	/**
+	 * 
+	 * @param e
+	 *            exam user selected
+	 * @param questions
+	 *            list of questions for the exam
+	 * @return <code>true</code> if the progress for given exam has been started
+	 *         right now, <code>false</code> otherwise
+	 */
 	public boolean startExam(Exam e, List<Question> questions) {
 		if (e != null && !isExamStarted()) {
 			exam = e;

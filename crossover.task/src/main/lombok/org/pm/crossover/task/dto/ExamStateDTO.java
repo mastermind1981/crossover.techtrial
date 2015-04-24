@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 
 import org.pm.crossover.task.model.Answer;
 
+/**
+ * State object DTO
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

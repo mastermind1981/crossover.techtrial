@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import org.pm.crossover.task.model.Answer;
 
 /**
- * Question choice answer
+ * Question choice answer DTO
  */
 @Data
 @NoArgsConstructor
