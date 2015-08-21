@@ -6,149 +6,67 @@
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="http://momentjs.com/downloads/moment.js"></script>
-<script src="js/main.js"></script>
+<!-- <script src="js/main.js"></script> -->
 
-<title>Exam</title>
+<title>Remote Java Compilation</title>
 </head>
 <body>
 
 	<div class="main">
 		<div class="content">
 			<div align="right">
-				<i><span id="_fullname"></span></i> <a href="./logout">Logout</a>
+				<i>Hello, User</i> <a href="./logout">Logout</a>
 			</div>
 
-			<!-- Exam list -->
-			<div class="subtitle-div" id="_exams">
-				<div class="text-div">
-					<h3>Available exams</h3>
-				</div>
-				<table class="fieldList">
-					<tbody class="app-ul" id="_examlist" />
-				</table>
-			</div>
+			<i>Uploading File With Ajax</i><br />
+			<form id="form2" method="post" action="./rest/upload"
+				enctype="multipart/form-data">
+				<!-- File input -->
+				<input name="file2" id="file2" type="file" /><br />
+			</form>
 
-			<!-- Exam info -->
-			<div class="subtitle-div" id="_examinfo">
-				<div class="text-div">
-					<h3>
-						Exam #<span id="_id"></span> Overview
-					</h3>
-				</div>
-				<table class="fieldList">
-					<tr>
-						<td>Exam Name:</td>
-						<td><strong><span id="_name"></span></strong></td>
-					</tr>
-					<tr>
-						<td>Description:</td>
-						<td><span id="_desc"></span></td>
-					</tr>
-					<tr>
-						<td>Duration:</td>
-						<td><strong><span id="_duration"></span> minutes</strong></td>
-					</tr>
-					<tr>
-						<td>Pass score:</td>
-						<td><strong><span id="_pass"></span></strong> points (<strong><span
-								id="_total"></span></strong> total)</td>
-					</tr>
-					<tr>
-						<td colspan="2" align="center"><button class="backToExamList">Back
-								to list</button>
-							<button id="_start">Start exam</button></td>
-					</tr>
-				</table>
-			</div>
+			<button value="Submit" onclick="uploadFormData()">Upload</button>
+			<i>Using FormData Object</i>
 
-			<!-- Question -->
-			<div class="subtitle-div" id="_question">
-				<div class="text-div">
-					<span id="_timeleft"></span><br>
-					<span>Choose a question: <select id="_questions"></select></span>
-					<h3>
-						Q#<span id="_order"></span> <span id="_title"></span>
-					</h3>
-				</div>
-				<div id="_options">
-					<table class="ansList">
-						<thead>
-							<tr>
-								<td >
-									<p id="_desc"></p>
-								</td>
-							</tr>
-						</thead>
-						<tbody id="_optionsBody">
-						</tbody>
-						<tfoot>
-							<tr>
-								<td ><button id="_postanswer">Post
-										answer</button></td>
-							</tr>
-						</tfoot>
-					</table>
-				</div>
-			</div>
+			<div id="result"></div>
 
-			<!-- Exam result -->
-			<div class="subtitle-div" id="_examresult">
-				<div class="text-div">
-					<h3>
-						Exam #<span id="_id"></span> results
-					</h3>
-				</div>
-				<table class="fieldList">
-					<tr>
-						<td>Exam Name:</td>
-						<td><strong><span id="_name"></span></strong></td>
-					</tr>
-					<tr>
-						<td>Status:</td>
-						<td><strong><span id="_status"></span></strong></td>
-					</tr>
-					<tr>
-						<td>Your score:</td>
-						<td><strong><span id="_score"></span></strong> points</td>
-					</tr>
-					<tr>
-						<td>Pass score:</td>
-						<td><strong><span id="_pass"></span></strong> points (<strong><span
-								id="_total"></span></strong> total)</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<table>
-								<thead>
-									<tr>
-										<th>Question</th>
-										<th>Your answer</th>
-										<th>Score</th>
-									</tr>
-								</thead>
-								<tbody id="_answerResults">
-									<tr>
-										<td>What is the capital of the Freat Britain</td>
-										<td><span class="red">Paris</span>, <span class="green">London</span></td>
-										<td>1</td>
-									</tr>
-								</tbody>
-								<tfoot>
-									<tr>
-										<td colspan="2">Overall</td>
-										<td><span id="_sumscore">4</span></td>
-									</tr>
-								</tfoot>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" align="center"><button class="backToExamList">Home</button></td>
-					</tr>
-				</table>
-			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		function uploadFormData() {
+			$('#result').html('');
+
+			var oMyForm = new FormData();
+			oMyForm.append("file", file2.files[0]);
+
+			$.ajax({
+				url : './upload',
+				data : oMyForm,
+				dataType : 'json',
+				processData : false,
+				contentType : false,
+				type : 'POST',
+				success : function(data) {
+					$('#result').html(data.message);
+					if (data.success) {
+						requestCompilation(data.id);
+					}
+				}
+			});
+		}
+		function requestCompilation(fileId) {
+			$.ajax({
+				url : './compile',
+				data :  {fileId: fileId},
+				dataType : 'json',
+				complete : function(response) {
+					if (response.status == 200) {
+						var data = response.responseJSON;
+						$('#result').html(data.output);
+					}
+				}
+			})
+		}
+	</script>
 </body>
 </html>
