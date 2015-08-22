@@ -49,7 +49,7 @@
 				success : function(data) {
 					$('#result').html(data.message);
 					if (data.success) {
-						requestCompilation(data.id);
+						requestCompilation(data.fileId);
 					}
 				}
 			});
