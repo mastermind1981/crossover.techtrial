@@ -7,6 +7,23 @@
 	<packaging>war</packaging>
 	<name>JCWSServer</name>
 	<description>My Remote Java Compiler Web Service Server</description>
+	<dependencies>
+		<dependency>
+			<groupId>javax.xml</groupId>
+			<artifactId>webservices-api-osgi</artifactId>
+			<version>2.0-b03</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.ws</groupId>
+			<artifactId>jaxws-api</artifactId>
+			<version>2.2.11</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<finalName>techtrialServer</finalName>
 		<sourceDirectory>src</sourceDirectory>
