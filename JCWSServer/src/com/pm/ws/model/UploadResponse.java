@@ -2,6 +2,9 @@ package com.pm.ws.model;
 
 import java.io.Serializable;
 
+/**
+ * Model class for Upload action response
+ */
 public class UploadResponse implements Serializable {
 	/**
 	 * 
@@ -11,38 +14,69 @@ public class UploadResponse implements Serializable {
 	private String message;
 	private String fileId;
 
+	/**
+	 * 
+	 */
 	public UploadResponse() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public UploadResponse(boolean success, String message, String id) {
+	/**
+	 * @param success
+	 * @param message
+	 * @param fileId
+	 */
+	public UploadResponse(boolean success, String message, String fileId) {
 		super();
 		this.success = success;
 		this.message = message;
-		this.fileId = id;
+		this.fileId = fileId;
 	}
 
+	/**
+	 * @return the success
+	 */
 	public boolean isSuccess() {
 		return success;
 	}
 
+	/**
+	 * @param success
+	 *            the success to set
+	 */
 	public void setSuccess(boolean success) {
 		this.success = success;
 	}
 
+	/**
+	 * @return the message
+	 */
 	public String getMessage() {
 		return message;
 	}
 
+	/**
+	 * @param message
+	 *            the message to set
+	 */
 	public void setMessage(String message) {
 		this.message = message;
 	}
 
+	/**
+	 * @return the fileId
+	 */
 	public String getFileId() {
 		return fileId;
 	}
 
-	public void setFileId(String id) {
-		this.fileId = id;
+	/**
+	 * @param fileId
+	 *            the fileId to set
+	 */
+	public void setFileId(String fileId) {
+		this.fileId = fileId;
 	}
+
 }

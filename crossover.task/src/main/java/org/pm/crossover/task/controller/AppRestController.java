@@ -2,6 +2,7 @@ package org.pm.crossover.task.controller;
 
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.pm.crossover.task.config.ApplicationConfiguration.JCServiceAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -19,13 +20,15 @@ import com.pm.ws.Upload;
 import com.pm.ws.UploadResponse;
 
 /**
- * The main REST API for exam application
+ * The main REST API for application
  *
  */
 @RestController
 @RequestMapping("/")
 @Scope(WebApplicationContext.SCOPE_REQUEST)
 public class AppRestController {
+
+	final static Logger logger = Logger.getLogger(AppRestController.class);
 
 	@Autowired
 	JCServiceAccessor jcClient;
@@ -47,17 +50,17 @@ public class AppRestController {
 				throw new Exception("Please select ZIP archive");
 			}
 			MultipartFile mpf = request.getFile(itr.next());
-			System.out.println(mpf.getOriginalFilename() + " uploaded!");
+			logger.info(mpf.getOriginalFilename() + " uploaded!");
 
 			Upload upl = new Upload();
 			upl.setFile(mpf.getBytes());
 			resp = jcClient.getService().upload(upl);
 		} catch (Exception e) {
+			logger.error("Error on upload request proecssing ", e);
 			resp = new UploadResponse();
 			resp.setFileId(null);
 			resp.setMessage(e.getLocalizedMessage());
 			resp.setSuccess(false);
-			e.printStackTrace(); // FIXME
 		}
 
 		return resp;

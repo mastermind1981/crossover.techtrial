@@ -14,21 +14,22 @@
 
 	<div class="main">
 		<div class="content">
-			<div align="right">
-				<i>Hello, User</i> <a href="./logout">Logout</a>
+			<div align="right" style="padding-top: 10px;">
+				Hello, User <a href="./logout">Logout</a>
 			</div>
 
-			<i>Uploading File With Ajax</i><br />
+			Please choose the zip archive with a Java project (note that pom.xml
+			should be located in the root of that archive) <br />
 			<form id="form2" method="post" action="./rest/upload"
-				enctype="multipart/form-data">
-				<!-- File input -->
+				enctype="multipart/form-data"
+				style="padding-top: 10px; padding-bottom: 10px;">
 				<input name="file2" id="file2" type="file" /><br />
 			</form>
 
 			<button value="Submit" onclick="uploadFormData()">Upload</button>
-			<i>Using FormData Object</i>
 
-			<div id="result"></div>
+			<div id="result"
+				style="font-family: 'Courier New', Courier, monospace; font-size: 0.7em"></div>
 
 		</div>
 	</div>
@@ -39,33 +40,58 @@
 			var oMyForm = new FormData();
 			oMyForm.append("file", file2.files[0]);
 
-			$.ajax({
-				url : './upload',
-				data : oMyForm,
-				dataType : 'json',
-				processData : false,
-				contentType : false,
-				type : 'POST',
-				success : function(data) {
-					$('#result').html(data.message);
-					if (data.success) {
-						requestCompilation(data.fileId);
-					}
-				}
-			});
+			$
+					.ajax({
+						url : './upload',
+						data : oMyForm,
+						dataType : 'json',
+						processData : false,
+						contentType : false,
+						type : 'POST',
+						success : function(data) {
+							if (data.success) {
+								$('#result')
+									.append(
+											$(
+												'<p style="font-family: Courier New, Courier, monospace; font-size: 0.7em;">')
+												.html(data.message));
+								requestCompilation(data.fileId);
+							} else {
+								$('#result')
+									.append(
+											$(
+												'<p style="font-family: Courier New, Courier, monospace; font-size: 0.7em; color: red;">')
+												.html(data.message));
+							}
+						}
+					});
 		}
 		function requestCompilation(fileId) {
-			$.ajax({
-				url : './compile',
-				data :  {fileId: fileId},
-				dataType : 'json',
-				complete : function(response) {
-					if (response.status == 200) {
-						var data = response.responseJSON;
-						$('#result').html(data.output);
-					}
-				}
-			})
+			$
+					.ajax({
+						url : './compile',
+						data : {
+							fileId : fileId
+						},
+						dataType : 'json',
+						complete : function(response) {
+							if (response.status == 200) {
+								var data = response.responseJSON;
+								$('#result')
+										.append(
+												$(
+														'<p style="font-family: Courier New, Courier, monospace; font-size: 0.7em;">')
+														.html(data.output));
+							} else {
+								$('#result')
+										.append(
+												$(
+														'<p style="font-family: Courier New, Courier, monospace; font-size: 0.7em; color: red;">')
+														.html(
+																response.responseText));
+							}
+						}
+					})
 		}
 	</script>
 </body>
