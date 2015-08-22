@@ -42,18 +42,9 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	public JCServiceImpl jcClient() {
-		URL url = null;
-		WebServiceException e = null;
-		try {
-			url = new URL(serviceHost() + "techtrialServer/jc?wsdl");
-		} catch (MalformedURLException ex) {
-			e = new WebServiceException(ex);
-		}
-		JCServerImplService.setWSDLLocAndException(url, e);
-		JCServerImplService jcServer = new JCServerImplService();
-		return jcServer.getJCServerImplPort();
-	}
+	public JCServiceAccessor jcClient() {
+		return new JCServiceAccessor(serviceHost());
+	};
 
 	@Override
 	public void configureDefaultServletHandling(
@@ -91,6 +82,29 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 			host += "/";
 		}
 		return host;
+	}
+
+	public static class JCServiceAccessor {
+		private URL url = null;
+		private WebServiceException e = null;
+		private JCServiceImpl service;
+
+		public JCServiceAccessor(String host) {
+			try {
+				url = new URL(host + "techtrialServer/jc?wsdl");
+			} catch (MalformedURLException ex) {
+				e = new WebServiceException(ex);
+			}
+		}
+
+		public JCServiceImpl getService() {
+			if (service == null) {
+				JCServerImplService.setWSDLLocAndException(url, e);
+				JCServerImplService jcServer = new JCServerImplService();
+				service = jcServer.getJCServerImplPort();
+			}
+			return service;
+		}
 	}
 
 }
